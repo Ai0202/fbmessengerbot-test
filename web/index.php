@@ -64,7 +64,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                         'text' => sprintf($arr),
                     ],
                 ];
-                $client->request('POST', $path, ['json' => $arr]);
+                $client->request('POST', $path, ['json' => $json]);
             }
         }
 
