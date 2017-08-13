@@ -39,6 +39,19 @@ $app->post('/callback', function (Request $request) use ($app) {
             $text = $m['message']['text'];
 
             if ($text) {
+
+                $post_data = [
+                    'apikey' => getenv('A3RT_API_KEY'),
+                    'query' => $text,
+                ];
+
+                $ch = curl_init("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk");
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                $res = curl_exec($ch);
+                curl_close($ch);
+
                 $path = sprintf('me/messages?access_token=%s', getenv('FACEBOOK_PAGE_ACCESS_TOKEN'));
                 $json = [
                     'recipient' => [
@@ -46,7 +59,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                     ],
                     'message' => [
                         // 'text' => sprintf('%sじゃないって言ってんだろ！！', $text),
-                        'text' => sprintf($text), 
+                        'text' => sprintf($res),
                     ],
                 ];
                 $client->request('POST', $path, ['json' => $json]);
