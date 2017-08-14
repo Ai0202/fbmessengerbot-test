@@ -57,7 +57,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                 $url = $obj->books->$isbn->$system_id->reserveurl;
                 $lend_info = $obj->books->$isbn->$system_id->status;
 
-                $response = 'タイトル:'.$title.'URL:'.$url;
+                $response = 'タイトル:'.$title.\n.'URL:'.$url;
 
                 $path = sprintf('me/messages?access_token=%s', getenv('FACEBOOK_PAGE_ACCESS_TOKEN'));
                 $json = [
