@@ -50,7 +50,7 @@ $app->post('/callback', function (Request $request) use ($app) {
 
                 //calil APIで本があるか確認
                 $api_key = 'appkey={'.getenv('CALIL_API_KEY').'}';
-                $system_id = 'Tokyo_Pref';
+                $system_id = 'Tokyo_NDL';
                 $res_json = file_get_contents("http://api.calil.jp/check?".$api_key."&isbn=".$isbn."&systemid=".$system_id."&callback=no");
 
                 $obj = json_decode($res_json);
