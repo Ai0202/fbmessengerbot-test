@@ -39,21 +39,25 @@ $app->post('/callback', function (Request $request) use ($app) {
             $text = $m['message']['text'];
 
             if ($text) {
+                //google booksでISBNと正確なタイトル取得
+                $encode_title = urlencode($text);
+                $book_info_json = file_get_contents("https://www.googleapis.com/books/v1/volumes?q=intitle:".$encode_title);
+                $book_info = json_decode($book_info_json, true);
 
-                $post_data = [
-                    'apikey' => getenv('A3RT_API_KEY'),
-                    'query' => $text,
-                ];
+                //本が何冊ヒットしても一番目?に取得したデータのISBN10(10がなければ勝手に13になると思う)を取得
+                $isbn = $book_info['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'];
+                $title = $book_info['items'][0]['volumeInfo']['title'];
 
-                $ch = curl_init("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk");
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                $result = curl_exec($ch);
-                curl_close($ch);
+                //calil APIで本があるか確認
+                $api_key = 'appkey={'.getenv('CALIL_API_KEY').'}';
+                $system_id = 'Tokyo_Pref';
+                $res_json = file_get_contents("http://api.calil.jp/check?".$api_key."&isbn=".$isbn."&systemid=".$system_id."&callback=no");
 
-                $arr = json_decode($result, true);
-                $response = $arr['results'][0]['reply'];
+                $obj = json_decode($res_json);
+                $url = $obj->books->$isbn->$system_id->reserveurl;
+                $lend_info = $obj->books->$isbn->$system_id->status;
+
+                $response = 'タイトル:'.$title.'URL:'.$url;
 
                 $path = sprintf('me/messages?access_token=%s', getenv('FACEBOOK_PAGE_ACCESS_TOKEN'));
                 $json = [

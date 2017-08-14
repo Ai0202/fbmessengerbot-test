@@ -1,3 +1,6 @@
 vendor/
 .env
 test.php
+flickr.php
+calil.php
+web/index_bk.php
