@@ -49,10 +49,11 @@ $app->post('/callback', function (Request $request) use ($app) {
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                $res = curl_exec($ch);
+                $result = curl_exec($ch);
                 curl_close($ch);
 
-                $arr = json_decode('$res');
+                $arr = json_decode($result, true);
+                $response = $arr['results'][0]['reply'];
 
                 $path = sprintf('me/messages?access_token=%s', getenv('FACEBOOK_PAGE_ACCESS_TOKEN'));
                 $json = [
@@ -61,7 +62,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                     ],
                     'message' => [
                         // 'text' => sprintf('%sじゃないって言ってんだろ！！', $text),
-                        'text' => sprintf($arr),
+                        'text' => sprintf($response),
                     ],
                 ];
                 $client->request('POST', $path, ['json' => $json]);
