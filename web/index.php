@@ -71,7 +71,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                         foreach ($lend_info as $lib => $status) {
                             $response .= '所蔵館:'.$lib.nl2br('\n').'貸出状況:'.$status.nl2br('\n');
                         }
-                        $response = 'URL:'.$url;
+                        $response .= 'URL:'.$url;
                     // 図書館に本がなかった場合の処理
                     }else {
                         $response = '船橋の図書館に該当の本がありませんでした。';
