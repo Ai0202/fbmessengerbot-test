@@ -68,7 +68,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                         $url = $obj->books->$isbn->$system_id->reserveurl;
                         $lend_info = $obj->books->$isbn->$system_id->libkey;
                         foreach ($lend_info as $lib => $status) {
-                            $response = '所蔵館:'.$lib.nl2br('\n').'貸出状況:'.$status.nl2br('\n');
+                            $response = $title.$url.'所蔵館:'.$lib.nl2br('\n').'貸出状況:'.$status.nl2br('\n');
                         }
                     // 図書館に本がなかった場合の処理
                     }else {
