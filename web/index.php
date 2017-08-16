@@ -79,8 +79,6 @@ $app->post('/callback', function (Request $request) use ($app) {
                     $response = '検索された本が世の中から見つかりませんでした。';
                 }
 
-                $response = 'タイトル:'.$title.'URL:'.$url;
-
                 $path = sprintf('me/messages?access_token=%s', getenv('FACEBOOK_PAGE_ACCESS_TOKEN'));
                 $json = [
                     'recipient' => [
