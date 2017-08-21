@@ -69,12 +69,12 @@ $app->post('/callback', function (Request $request) use ($app) {
                         $lend_info = $obj->books->$isbn->$system_id->libkey;
                         $response = 'タイトル:'.$title;
                         foreach ($lend_info as $lib => $status) {
-                            $response .= '所蔵館:'.$lib.nl2br('\n').'貸出状況:'.$status.nl2br('\n');
+                            $response .= '所蔵館:'.$lib.'<br>'.'貸出状況:'.$status.'<br>';
                         }
                         $response .= 'URL:'.$url;
                     // 図書館に本がなかった場合の処理
                     }else {
-                        $response = '船橋の図書館に該当の本がありませんでした。';
+                        $response = '図書館に該当の本がありませんでした。';
                     }
                 //本が見つからなかった場合の処理
                 }else {
