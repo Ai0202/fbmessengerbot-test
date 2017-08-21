@@ -80,6 +80,12 @@ $app->post('/callback', function (Request $request) use ($app) {
                 }else {
                     $response = '検索された本が世の中から見つかりませんでした。';
                 }
+                $response = <<< EOF
+                    <p>
+                    改行できるかテスト<br>
+                    改行できるかテスト<br>
+                    </p>
+                EOF;
 
                 $path = sprintf('me/messages?access_token=%s', getenv('FACEBOOK_PAGE_ACCESS_TOKEN'));
                 $json = [
