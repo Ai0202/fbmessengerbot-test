@@ -74,7 +74,7 @@ $app->post('/callback', function (Request $request) use ($app) {
                         $response .= 'URL:'.$url;
                     // 図書館に本がなかった場合の処理
                     }else {
-                        $response = $title.'図書館に該当の本がありませんでした。';
+                        $response = $title.'は図書館にありませんでした。';
                     }
                 //本が見つからなかった場合の処理
                 }else {
