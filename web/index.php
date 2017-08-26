@@ -26,7 +26,6 @@ $app->get('/callback', function (Request $request) use ($app) {
 });
 
 $app->post('/callback', function (Request $request) use ($app) {
-    // Let's hack from here!
     $body = json_decode($request->getContent(), true);
     $client = new Client(['base_uri' => 'https://graph.facebook.com/v2.6/']);
 
@@ -67,14 +66,15 @@ $app->post('/callback', function (Request $request) use ($app) {
                     if(!empty($obj->books->$isbn->$system_id->reserveurl)) {
                         $url = $obj->books->$isbn->$system_id->reserveurl;
                         $lend_info = $obj->books->$isbn->$system_id->libkey;
-                        $response = 'タイトル:'.$title;
+                        $response = 'タイトル:'.$title.'\\n';
                         foreach ($lend_info as $lib => $status) {
-                            $response .= '所蔵館:'.$lib.'<br>'.'貸出状況:'.$status.'<br>';
+                            $response .= '所蔵館:'.$lib.'\\n';
+                            $response .= '貸出状況:'.$status.'\\n';
                         }
                         $response .= 'URL:'.$url;
                     // 図書館に本がなかった場合の処理
                     }else {
-                        $response = '図書館に該当の本がありませんでした。';
+                        $response = $title.'図書館に該当の本がありませんでした。';
                     }
                 //本が見つからなかった場合の処理
                 }else {
